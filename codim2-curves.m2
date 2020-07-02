@@ -1,5 +1,5 @@
 --Codim 2 curves:
-
+--vijay's comment
 restart
 needsPackage "FourTiTwo"
 
