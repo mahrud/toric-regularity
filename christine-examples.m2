@@ -156,3 +156,35 @@ betti res J
 betti res IA
 
 
+
+
+-------------------------------
+-------------------------------
+--07/20/2020
+--Potential PS counterexample? 
+--No: there was a non-minimizing issue with M2
+restart
+needsPackage "FourTiTwo"
+needsPackage "Binomials"
+
+A = matrix{{1,1,1,1,1},{0,0,0,1,1},{0,5,7,4,5}}
+gale_A = matrix{{0,1},{1,-2},{-1,1},{-2,-3},{2,3}}
+
+--S = QQ[x_1..x_(numcols A),Degrees=>{{1, 0, 0}, {1, 0, 5}, {1, 0, 7}, {1, 1, 4}, {1, 1, 5}}]
+S = QQ[x_1..x_(numcols A)]
+IA = toricMarkov(A,S)
+regularity IA
+degree IA --equality holds in this case
+
+
+--variable reduction x_1=x_5 (first quadrant)
+--regularity IA should be 7, while regularity after reduction is 6
+J = ideal mingens saturate(eliminate(IA+ideal(x_1-x_5),x_5),x_1*x_2*x_3*x_4)
+codim J
+regularity J
+degree J
+binomialAssociatedPrimes J 
+isPrime J
+betti res J
+betti res IA
+
