@@ -187,9 +187,11 @@ max degrees (res IA)_3
 --Need: monomial x^a with Aa=C
 a' = solve(A,transpose matrix {{9,2,44}})
 B = gens kernel A
---Christine's HW: quickly find a in the fiber of C
+--Christine's HW: quickly find a in the fiber of C (done)
 --hack to keep going: 
-a = a'+7*B_{0} --x_2^7x_4x_5
+--a = a'+7*B_{0} --x_2^7x_4x_5
+--Updated: 07/21/2020at 4:45pm: This will find a nonneg vector in the fiber of C
+a = (latticePoints polyhedronFromHData(-map(ZZ^5,ZZ^5,1),transpose matrix {{0,0,0,0,0}}, A,transpose matrix {{9,2,44}}))#0
 
 --Q: Is P_a the unit square?
 needsPackage "Polyhedra"
