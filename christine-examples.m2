@@ -168,15 +168,44 @@ needsPackage "FourTiTwo"
 needsPackage "Binomials"
 
 A = matrix{{1,1,1,1,1},{0,0,0,1,1},{0,5,7,4,5}}
-gale_A = matrix{{0,1},{1,-2},{-1,1},{-2,-3},{2,3}}
+entries transpose A
+--gale_A = matrix{{0,1},{1,-2},{-1,1},{-2,-3},{2,3}}
 
---S = QQ[x_1..x_(numcols A),Degrees=>{{1, 0, 0}, {1, 0, 5}, {1, 0, 7}, {1, 1, 4}, {1, 1, 5}}]
-S = QQ[x_1..x_(numcols A)]
+S = QQ[x_1..x_(numcols A),Degrees=>entries transpose A]
+--S = QQ[x_1..x_(numcols A)]
 IA = toricMarkov(A,S)
 regularity IA
 degree IA --equality holds in this case
+res IA
+(res IA).dd
+betti res IA
+degrees (res IA)_3
+--{9,2,44} is the "C" to use to get the syz quadrangle
+
+--Need: monomial x^a with Aa=C
+a' = solve(A,transpose matrix {{9,2,44}})
+B = gens kernel A
+--Christine's HW: quickly find a in the fiber of C
+--hack to keep going: 
+a = a'+7*B_{0} --x_2^7x_4x_5
+
+--Q: Is P_a the unit square?
+needsPackage "Polyhedra"
+--help polyhedronFromHData
+--conv(u: (Bu\leq a))
+Pa = polyhedronFromHData(B,a)
+latticePoints Pa  
+--Q: automate finding the two "middle" vectors? 
+--Find two that add up to a third one. Use those two
+newB = B*matrix{{3,4},{2,3}}
+--Which two vectors are in the same quadrant?
+ 
+
+--Just checking: 
+latticePoints polyhedronFromHData(newB,a) --It's a square!
 
 
+    
 --variable reduction x_1=x_5 (first quadrant)
 --regularity IA should be 7, while regularity after reduction is 6
 J = ideal mingens saturate(eliminate(IA+ideal(x_1-x_5),x_5),x_1*x_2*x_3*x_4)
