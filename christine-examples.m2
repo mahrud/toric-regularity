@@ -181,6 +181,8 @@ res IA
 betti res IA
 degrees (res IA)_3
 --{9,2,44} is the "C" to use to get the syz quadrangle
+--Here it is:
+max degrees (res IA)_3
 
 --Need: monomial x^a with Aa=C
 a' = solve(A,transpose matrix {{9,2,44}})
@@ -194,11 +196,14 @@ needsPackage "Polyhedra"
 --help polyhedronFromHData
 --conv(u: (Bu\leq a))
 Pa = polyhedronFromHData(B,a)
-latticePoints Pa  
---Q: automate finding the two "middle" vectors? 
---Find two that add up to a third one. Use those two
-newB = B*matrix{{3,4},{2,3}}
---Which two vectors are in the same quadrant?
+Latt = latticePoints Pa  
+--Find the "middle" vectors and convert to a matrix: 
+COC = matrix {toList (set Latt)-(set {sub(1/2*sub(sum Latt,QQ),ZZ),map(ZZ^2,ZZ^1,0)})}
+
+--Double check: do we care if COC has determinant 1? 
+
+Newb = B*COC
+--Which two vectors are in the same quadrant? Add this code? 
  
 
 --Just checking: 
