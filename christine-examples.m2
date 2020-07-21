@@ -206,13 +206,10 @@ COC = matrix {toList (set Latt)-(set {sub(1/2*sub(sum Latt,QQ),ZZ),map(ZZ^2,ZZ^1
 
 Newb = B*COC
 --Which two vectors are in the same quadrant? Add this code? 
- 
 
 --Just checking: 
 latticePoints polyhedronFromHData(newB,a) --It's a square!
-
-
-    
+  
 --variable reduction x_1=x_5 (first quadrant)
 --regularity IA should be 7, while regularity after reduction is 6
 J = ideal mingens saturate(eliminate(IA+ideal(x_1-x_5),x_5),x_1*x_2*x_3*x_4)
