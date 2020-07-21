@@ -188,3 +188,11 @@ isPrime J
 betti res J
 betti res IA
 
+J = ideal mingens saturate(eliminate(IA+ideal(x_1-x_3),x_3),x_1*x_2*x_5*x_4)
+codim J
+regularity J
+degree J
+binomialAssociatedPrimes J 
+isPrime J
+betti res J
+betti res IA
