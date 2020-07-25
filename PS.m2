@@ -133,6 +133,7 @@ A2 = matrix{{1, 1, 1, 1, 1, 1}, {0, 0, 0, 1, 1, 1}, {0, 1, 1, 0, 1, 1}, {0, 1, 2
 
 PSeq = {};
 PSless = {};
+PSdifferences = {};
 
 testPS = A->(
     if ZZ^(numrows A) != image A then(notsurjective = notsurjective|{A}; bad = bad|{A})--Check that ZZA == ZZ^d
@@ -142,7 +143,9 @@ testPS = A->(
 	--Check that IA\subseteq (vars)^2 (I removed checking that IA is zero): 
 	if (gens IA) % (ideal S_*)^2 != 0 then (surjectivebutnotinsquareideal = surjectivebutnotinsquareideal|{A}; bad = bad|{A})
 	else(
-	    if regularity IA == (degree IA - codim IA + 1) then(
+	    reg := regularity IA;
+	    deg := degree IA;
+	    if reg == (deg - codim IA + 1) then(
 	    	    --we continue here when E-G holds with equality:
 		    eqL = eqL|{A};
 	    	    if pdim (S^1/IA) == codim IA then CMeq = CMeq|{A} --CM case
@@ -150,13 +153,16 @@ testPS = A->(
 			noCMeq = noCMeq|{A}; --nonCM case
 			if codim IA == 2 then( --PS reduction for nonCM and codim 2
 			    reductions := {};
+			    triples := {};
 			    scan(reduction(A), IL'->(reductions = reductions|{{regularity IL', degree IL', betti res IL'}}));
-			    PSeq = PSeq|{{A, gale(A), {regularity IA, degree IA, betti res IA}, reductions}}
+			    scan(reductions, i->(triples = triples|{{i#0 - reg, i#1 - i#0, deg - i#1}}));
+			    PSeq = PSeq|{{A, gale(A), {reg, deg, betti res IA}, reductions}};
+			    PSdifferences = PSdifferences|{{A, gale(A), reg, deg, triples}}
 			    )
 			)
 		    )
     	    else(
-		if regularity IA > (degree IA - codim IA + 1) then(yeet = yeet|{A}) --yeet case
+		if reg > (deg - codim IA + 1) then(yeet = yeet|{A}) --yeet case
 		else(
 		    noteqL = noteqL|{A};
 		    if pdim (S^1/IA) == codim IA then(CMless = CMless|{A}) --CM case
@@ -164,8 +170,11 @@ testPS = A->(
 			noCMless = noCMless|{A}; --nonCM case
 			if codim IA == 2 then( --PS reduction for nonCM and codim 2
 			    reductions := {};
+			    triples := {};
 			    scan(reduction(A), IL'->(reductions = reductions|{{regularity IL', degree IL', betti res IL'}}));
-			    PSless = PSless|{{A, gale(A), {regularity IA, degree IA, betti res IA}, reductions}}
+			    scan(reductions, i->(triples = triples|{{i#0 - reg, i#1 - i#0, deg - i#1}}));
+			    PSless = PSless|{{A, gale(A), {reg, deg, betti res IA}, reductions}};
+			    PSdifferences = PSdifferences|{{A, gale(A), reg, deg, triples}}
 			    )
 			)
 		    )
